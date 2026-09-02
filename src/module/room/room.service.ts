@@ -1,7 +1,11 @@
 import httpStatus from "http-status";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
-import type { ICreateRoomPayload, IUpdateRoomPayload, IRoomFilters } from "./room.interface";
+import type {
+  ICreateRoomPayload,
+  IUpdateRoomPayload,
+  IRoomFilters,
+} from "./room.interface";
 
 const createRoom = async (ownerId: string, payload: ICreateRoomPayload) => {
   const flat = await prisma.flat.findFirst({
@@ -14,7 +18,10 @@ const createRoom = async (ownerId: string, payload: ICreateRoomPayload) => {
   }
 
   if (flat.property.ownerId !== ownerId) {
-    throw new AppError(httpStatus.FORBIDDEN, "You can only add rooms to your own flat");
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You can only add rooms to your own flat",
+    );
   }
 
   const room = await prisma.room.create({
@@ -88,7 +95,11 @@ const getRoomById = async (id: string) => {
     where: { id, deletedAt: null },
     include: {
       flat: {
-        include: { property: { select: { id: true, title: true, city: true, ownerId: true } } },
+        include: {
+          property: {
+            select: { id: true, title: true, city: true, ownerId: true },
+          },
+        },
       },
     },
   });
@@ -108,7 +119,11 @@ const getMyRooms = async (ownerId: string) => {
   });
 };
 
-const updateRoom = async (id: string, ownerId: string, payload: IUpdateRoomPayload) => {
+const updateRoom = async (
+  id: string,
+  ownerId: string,
+  payload: IUpdateRoomPayload,
+) => {
   const room = await prisma.room.findFirst({
     where: { id, deletedAt: null },
     include: { flat: { include: { property: true } } },
@@ -119,7 +134,10 @@ const updateRoom = async (id: string, ownerId: string, payload: IUpdateRoomPaylo
   }
 
   if (room.flat.property.ownerId !== ownerId) {
-    throw new AppError(httpStatus.FORBIDDEN, "You can only update rooms in your own property");
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You can only update rooms in your own property",
+    );
   }
 
   const updated = await prisma.room.update({
@@ -141,11 +159,17 @@ const deleteRoom = async (id: string, ownerId: string) => {
   }
 
   if (room.flat.property.ownerId !== ownerId) {
-    throw new AppError(httpStatus.FORBIDDEN, "You can only delete rooms in your own property");
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You can only delete rooms in your own property",
+    );
   }
 
   if (room.status === "OCCUPIED" || room.status === "RESERVED") {
-    throw new AppError(httpStatus.BAD_REQUEST, "Cannot delete a room that is occupied or reserved");
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Cannot delete a room that is occupied or reserved",
+    );
   }
 
   const deleted = await prisma.room.update({
