@@ -1,19 +1,19 @@
 model AuditLog {
-    id          String      @id @default(uuid())
-    userId      String
-    action      AuditAction
-    entity      String
-    entityId    String?
-    description String?
-    metadata    Json?
+  id          String      @id @default(uuid())
+  userId      String
+  action      AuditAction
+  entity      String
+  entityId    String?
+  description String?
+  metadata    Json?
 
-    user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
-    createdAt DateTime @default(now())
+  createdAt DateTime @default(now())
 
-    @@index([userId])
-    @@index([action])
-    @@index([entity])
-    @@index([createdAt])
-    @@map("audit_logs")
+  @@index([userId])
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("audit_logs")
 }

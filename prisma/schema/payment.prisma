@@ -1,24 +1,24 @@
 model Payment {
-    id            String @id @default(uuid())
-    applicationId String @unique
-    tenantId      String
+  id            String @id @default(uuid())
+  applicationId String @unique
+  tenantId      String
 
-    amount Decimal
-    method PaymentMethod @default(SSLCOMMERZ)
-    status PaymentStatus @default(PENDING)
+  amount Decimal
+  method PaymentMethod @default(SSLCOMMERZ)
+  status PaymentStatus @default(PENDING)
 
-    transactionId String? @unique
-    gatewayData   Json?
+  transactionId String? @unique
+  gatewayData   Json?
 
-    paidAt DateTime?
+  paidAt DateTime?
 
-    application Application @relation(fields: [applicationId], references: [id])
-    tenant      User        @relation(fields: [tenantId], references: [id])
+  application Application @relation(fields: [applicationId], references: [id])
+  tenant      User        @relation(fields: [tenantId], references: [id])
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    @@index([tenantId])
-    @@index([status])
-    @@map("payments")
+  @@index([tenantId])
+  @@index([status])
+  @@map("payments")
 }

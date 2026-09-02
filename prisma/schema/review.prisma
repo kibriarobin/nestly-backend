@@ -1,20 +1,20 @@
 model Review {
-    id         String  @id @default(uuid())
-    tenantId   String
-    propertyId String
-    flatId     String?
-    rating     Int
-    comment    String?
+  id         String  @id @default(uuid())
+  tenantId   String
+  propertyId String
+  flatId     String?
+  rating     Int
+  comment    String?
 
-    tenant   User     @relation(fields: [tenantId], references: [id])
-    property Property @relation(fields: [propertyId], references: [id])
-    flat     Flat?    @relation(fields: [flatId], references: [id])
+  tenant   User     @relation(fields: [tenantId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id])
+  flat     Flat?    @relation(fields: [flatId], references: [id])
 
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
-    deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
-    @@index([propertyId])
-    @@index([tenantId])
-    @@map("reviews")
+  @@index([propertyId])
+  @@index([tenantId])
+  @@map("reviews")
 }

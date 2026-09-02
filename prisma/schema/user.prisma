@@ -1,27 +1,27 @@
 model User {
-    id           String       @id @default(uuid())
-    name         String
-    email        String       @unique
-    password     String?
-    phone        String?
-    role         UserRole     @default(TENANT)
-    authProvider AuthProvider @default(LOCAL)
-    status       UserStatus   @default(ACTIVE)
-    image        String?
+  id           String       @id @default(uuid())
+  name         String
+  email        String       @unique
+  password     String?
+  phone        String?
+  role         UserRole     @default(TENANT)
+  authProvider AuthProvider @default(LOCAL)
+  status       UserStatus   @default(ACTIVE)
+  image        String?
 
-    properties   Property[]
-    applications Application[]
-    payments     Payment[]
-    auditLogs    AuditLog[]
+  properties   Property[]
+  applications Application[]
+  payments     Payment[]
+  auditLogs    AuditLog[]
 
-    bookings Booking[]
-    reviews  Review[]
+  bookings Booking[]
+  reviews  Review[]
 
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
-    deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
-    @@index([role])
-    @@index([status])
-    @@map("users")
+  @@index([role])
+  @@index([status])
+  @@map("users")
 }

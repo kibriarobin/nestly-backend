@@ -1,47 +1,47 @@
 enum UserRole {
-    OWNER
-    TENANT
-    ADMIN
+  OWNER
+  TENANT
+  ADMIN
 }
 
 enum AuthProvider {
-    LOCAL
-    GOOGLE
+  LOCAL
+  GOOGLE
 }
 
 enum UserStatus {
-    ACTIVE
-    BLOCKED
-    DELETED
+  ACTIVE
+  BLOCKED
+  DELETED
 }
 
 enum PropertyStatus {
-    PENDING
-    APPROVED
-    REJECTED
-    SUSPENDED
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
 }
 
 enum AvailabilityStatus {
-    AVAILABLE
-    RESERVED
-    OCCUPIED
-    MAINTENANCE
-    INACTIVE
+  AVAILABLE
+  RESERVED
+  OCCUPIED
+  MAINTENANCE
+  INACTIVE
 }
 
 enum RentalType {
-    ROOM
-    FLAT
+  ROOM
+  FLAT
 }
 
 enum ApplicationStatus {
-    PENDING
-    UNDER_REVIEW
-    APPROVED
-    REJECTED
-    CANCELLED
-    CONFIRMED
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  CANCELLED
+  CONFIRMED
 }
 
 enum BookingStatus {
@@ -52,25 +52,25 @@ enum BookingStatus {
 }
 
 enum PaymentStatus {
-    PENDING
-    PAID
-    FAILED
-    CANCELLED
-    REFUNDED
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
+  REFUNDED
 }
 
 enum PaymentMethod {
-    SSLCOMMERZ
+  SSLCOMMERZ
 }
 
 enum AuditAction {
-    CREATE
-    UPDATE
-    DELETE
-    APPROVE
-    REJECT
-    BLOCK
-    UNBLOCK
-    LOGIN
-    PAYMENT
+  CREATE
+  UPDATE
+  DELETE
+  APPROVE
+  REJECT
+  BLOCK
+  UNBLOCK
+  LOGIN
+  PAYMENT
 }
