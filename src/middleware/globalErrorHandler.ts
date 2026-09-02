@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
-import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { Prisma } from "../../generated/prisma/client";
 import config from "../config";
 import { AppError } from "../utils/AppError";
@@ -46,10 +46,10 @@ export const globalErrorHandler = async (
   } else if (err instanceof Prisma.PrismaClientUnknownRequestError) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;
     errorMessage = "Error occurred during query execution";
-  } else if (err instanceof TokenExpiredError) {
+  } else if (err instanceof jwt.TokenExpiredError) {
     statusCode = httpStatus.UNAUTHORIZED;
     errorMessage = "Your session has expired. Please log in again";
-  } else if (err instanceof JsonWebTokenError) {
+  } else if (err instanceof jwt.JsonWebTokenError) {
     statusCode = httpStatus.UNAUTHORIZED;
     errorMessage = "Invalid token";
   } else if (err instanceof AppError) {
