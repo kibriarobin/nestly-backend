@@ -1,0 +1,24 @@
+model Property {
+    id          String         @id @default(uuid())
+    ownerId     String
+    title       String
+    description String?
+    address     String
+    city        String
+    area        String?
+    status      PropertyStatus @default(PENDING)
+
+    owner User   @relation(fields: [ownerId], references: [id])
+    flats Flat[]
+
+    reviews Review[]
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+
+    @@index([ownerId])
+    @@index([status])
+    @@index([city])
+    @@map("properties")
+}

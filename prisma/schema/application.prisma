@@ -1,0 +1,32 @@
+model Application {
+    id         String     @id @default(uuid())
+    tenantId   String
+    flatId     String
+    roomId     String?
+    rentalType RentalType
+
+    rent   Decimal
+    status ApplicationStatus @default(PENDING)
+
+    message     String?
+    appliedAt   DateTime  @default(now())
+    approvedAt  DateTime?
+    confirmedAt DateTime?
+
+    tenant  User     @relation(fields: [tenantId], references: [id])
+    flat    Flat     @relation(fields: [flatId], references: [id])
+    room    Room?    @relation(fields: [roomId], references: [id])
+    payment Payment?
+    booking Booking?
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+
+    @@index([tenantId])
+    @@index([flatId])
+    @@index([roomId])
+    @@index([status])
+    @@index([rentalType])
+    @@map("applications")
+}

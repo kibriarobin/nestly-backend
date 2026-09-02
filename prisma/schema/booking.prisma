@@ -1,0 +1,30 @@
+model Booking {
+    id            String        @id @default(uuid())
+    applicationId String        @unique
+    tenantId      String
+    flatId        String
+    roomId        String?
+    rentalType    RentalType
+
+    rent   Decimal
+    status BookingStatus @default(PENDING)
+
+    confirmedAt DateTime?
+    cancelledAt DateTime?
+    completedAt DateTime?
+
+    application Application @relation(fields: [applicationId], references: [id])
+    tenant      User        @relation(fields: [tenantId], references: [id])
+    flat        Flat        @relation(fields: [flatId], references: [id])
+    room        Room?       @relation(fields: [roomId], references: [id])
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+
+    @@index([tenantId])
+    @@index([flatId])
+    @@index([roomId])
+    @@index([status])
+    @@map("bookings")
+}

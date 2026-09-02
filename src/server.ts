@@ -6,14 +6,14 @@ const PORT = config.port;
 
 async function main() {
   try {
-    // await prisma.$connect();
-    // console.log("Nestly database Connected successfully!");
+    await prisma.$connect();
+    console.log("Nestly database Connected successfully!");
     app.listen(PORT, () => {
       console.log(`Nestly server is running on port ${PORT}`);
     });
   } catch (err) {
     console.error("Error starting the server:", err);
-    // await prisma.$disconnect();
+    await prisma.$disconnect();
     process.exit(1);
   }
 }
