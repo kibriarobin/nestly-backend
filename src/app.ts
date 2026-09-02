@@ -7,6 +7,8 @@ import { notFound } from "./middleware/notFound";
 import helmet from "helmet";
 import { AuthRoutes } from "./module/auth/auth.route";
 import { PropertyRoutes } from "./module/property/property.route";
+import { FlatRoutes } from "./module/flat/flat.route";
+import { RoomRoutes } from "./module/room/room.route";
 
 const app: Application = express();
 
@@ -29,6 +31,10 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/auth", AuthRoutes);
 
 app.use("/api/properties", PropertyRoutes);
+
+app.use("/api/flats", FlatRoutes);
+
+app.use("/api/rooms", RoomRoutes);
 
 app.use(notFound);
 app.use(globalErrorHandler);

@@ -1,3 +1,5 @@
+import { AvailabilityStatus } from "../../../generated/prisma/enums";
+
 export interface ICreateFlatPayload {
   propertyId: string;
   name: string;
@@ -11,12 +13,12 @@ export interface IUpdateFlatPayload {
   floor?: number;
   rent?: number;
   description?: string;
-  status?: "AVAILABLE" | "RESERVED" | "OCCUPIED" | "MAINTENANCE" | "INACTIVE";
+  status?: AvailabilityStatus;
 }
 
 export interface IFlatFilters {
   propertyId?: string;
-  status?: string;
+  status?: AvailabilityStatus;
   city?: string;
   searchTerm?: string;
 }
