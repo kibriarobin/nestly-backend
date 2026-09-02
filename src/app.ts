@@ -10,6 +10,7 @@ import { PropertyRoutes } from "./module/property/property.route";
 import { FlatRoutes } from "./module/flat/flat.route";
 import { RoomRoutes } from "./module/room/room.route";
 import { ApplicationRoutes } from "./module/application/application.route";
+import { BookingRoutes } from "./module/booking/booking.route";
 
 const app: Application = express();
 
@@ -38,6 +39,8 @@ app.use("/api/flats", FlatRoutes);
 app.use("/api/rooms", RoomRoutes);
 
 app.use("/api/applications", ApplicationRoutes);
+
+app.use("/api/bookings", BookingRoutes);
 
 app.use(notFound);
 app.use(globalErrorHandler);
