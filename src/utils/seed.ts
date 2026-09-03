@@ -1,27 +1,25 @@
+import bcrypt from "bcrypt";
 import { UserRole } from "../../generated/prisma/enums";
+import config from "../config";
 import { prisma } from "../lib/prisma";
 
-export const seedSuperAdmin = async () => {
+export const seedAdmin = async () => {
   try {
-    const isSuperAdminExists = await prisma.user.findFirst({
-      where: {
-        role: UserRole.ADMIN,
-      },
+    const isAdminExists = await prisma.user.findFirst({
+      where: { role: UserRole.ADMIN },
     });
 
-    if (isSuperAdminExists) {
-      console.log("Super admin already exist");
+    if (isAdminExists) {
+      console.log("Admin already exists");
       return;
     }
 
-    const name = config.super_admin_name;
-    const email = config.super_admin_email;
-    const password = config.super_admin_password;
+    const name = config.admin_name;
+    const email = config.admin_email;
+    const password = config.admin_password;
 
     if (!name || !email || !password) {
-      throw new Error(
-        "Super admin credentials are not provided in the .env file",
-      );
+      throw new Error("Admin credentials are not provided in the .env file");
     }
 
     const hashPassword = await bcrypt.hash(
@@ -29,13 +27,17 @@ export const seedSuperAdmin = async () => {
       Number(config.bcrypt_salt_rounds),
     );
 
-    const superAdmin = await prisma.user.create({
+    const admin = await prisma.user.create({
       data: {
         name,
         email,
         password: hashPassword,
-        role: Role.SUPER_ADMIN,
-        needPasswordChange: false,
-        emailVerified: true,
+        role: UserRole.ADMIN,
       },
     });
+
+    console.log("Admin created successfully:", admin.email);
+  } catch (error) {
+    console.error("Error creating admin:", error);
+  }
+};

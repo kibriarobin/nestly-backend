@@ -20,7 +20,7 @@ export default {
   ssl_fail_url: process.env.SSL_FAIL_URL!,
   ssl_cancel_url: process.env.SSL_CANCEL_URL!,
   ssl_is_live: process.env.SSL_IS_LIVE === "true",
-  super_admin_name: process.env.ADMIN_NAME!,
-  super_admin_email: process.env.ADMIN_EMAIL!,
-  super_admin_password: process.env.ADMIN_PASSWORD!,
+  admin_name: process.env.ADMIN_NAME!,
+  admin_email: process.env.ADMIN_EMAIL!,
+  admin_password: process.env.ADMIN_PASSWORD!,
 };
