@@ -1,9 +1,16 @@
 import httpStatus from "http-status";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
-import type { ICreatePropertyPayload, IUpdatePropertyPayload, IPropertyFilters } from "./property.interface";
+import type {
+  ICreatePropertyPayload,
+  IUpdatePropertyPayload,
+  IPropertyFilters,
+} from "./property.interface";
 
-const createProperty = async (ownerId: string, payload: ICreatePropertyPayload) => {
+const createProperty = async (
+  ownerId: string,
+  payload: ICreatePropertyPayload,
+) => {
   const property = await prisma.property.create({
     data: {
       ownerId,
@@ -102,7 +109,10 @@ const updateProperty = async (
   }
 
   if (property.ownerId !== ownerId) {
-    throw new AppError(httpStatus.FORBIDDEN, "You can only update your own property");
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You can only update your own property",
+    );
   }
 
   const updated = await prisma.property.update({
@@ -119,7 +129,9 @@ const deleteProperty = async (id: string, ownerId: string) => {
     include: {
       flats: {
         where: { deletedAt: null },
-        include: { bookings: { where: { status: { in: ["PENDING", "CONFIRMED"] } } } },
+        include: {
+          bookings: { where: { status: { in: ["PENDING", "CONFIRMED"] } } },
+        },
       },
     },
   });
@@ -129,10 +141,15 @@ const deleteProperty = async (id: string, ownerId: string) => {
   }
 
   if (property.ownerId !== ownerId) {
-    throw new AppError(httpStatus.FORBIDDEN, "You can only delete your own property");
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You can only delete your own property",
+    );
   }
 
-  const hasActiveBooking = property.flats.some((flat) => flat.bookings.length > 0);
+  const hasActiveBooking = property.flats.some(
+    (flat) => flat.bookings.length > 0,
+  );
   if (hasActiveBooking) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -149,7 +166,11 @@ const deleteProperty = async (id: string, ownerId: string) => {
 };
 
 // Admin only
-const updatePropertyStatus = async (id: string, status: "APPROVED" | "REJECTED" | "SUSPENDED") => {
+const updatePropertyStatus = async (
+  id: string,
+  adminId: string,
+  status: "APPROVED" | "REJECTED" | "SUSPENDED",
+) => {
   const property = await prisma.property.findFirst({
     where: { id, deletedAt: null },
   });
@@ -161,6 +182,16 @@ const updatePropertyStatus = async (id: string, status: "APPROVED" | "REJECTED" 
   const updated = await prisma.property.update({
     where: { id },
     data: { status },
+  });
+
+  await prisma.auditLog.create({
+    data: {
+      userId: adminId,
+      action: status === "APPROVED" ? "APPROVE" : "REJECT",
+      entity: "Property",
+      entityId: id,
+      description: `Property status changed to ${status}`,
+    },
   });
 
   return updated;

@@ -5,7 +5,10 @@ import { PropertyService } from "./property.service";
 import { pick } from "../../utils/pick";
 
 const createProperty = catchAsync(async (req, res) => {
-  const result = await PropertyService.createProperty(req.user!.userId, req.body);
+  const result = await PropertyService.createProperty(
+    req.user!.userId,
+    req.body,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -24,7 +27,10 @@ const getAllProperties = catchAsync(async (req, res) => {
     filters.status = "APPROVED";
   }
 
-  const result = await PropertyService.getAllProperties(filters, { page, limit });
+  const result = await PropertyService.getAllProperties(filters, {
+    page,
+    limit,
+  });
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -60,7 +66,11 @@ const getPropertyById = catchAsync(async (req, res) => {
 
 const updateProperty = catchAsync(async (req, res) => {
   const propertyId = req.params.propertyId as string;
-  const result = await PropertyService.updateProperty(propertyId, req.user!.userId, req.body);
+  const result = await PropertyService.updateProperty(
+    propertyId,
+    req.user!.userId,
+    req.body,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -72,7 +82,10 @@ const updateProperty = catchAsync(async (req, res) => {
 
 const deleteProperty = catchAsync(async (req, res) => {
   const propertyId = req.params.propertyId as string;
-  const result = await PropertyService.deleteProperty(propertyId, req.user!.userId);
+  const result = await PropertyService.deleteProperty(
+    propertyId,
+    req.user!.userId,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -84,7 +97,11 @@ const deleteProperty = catchAsync(async (req, res) => {
 
 const updatePropertyStatus = catchAsync(async (req, res) => {
   const propertyId = req.params.propertyId as string;
-  const result = await PropertyService.updatePropertyStatus(propertyId, req.body.status);
+  const result = await PropertyService.updatePropertyStatus(
+    propertyId,
+    req.user!.userId,
+    req.body.status,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

@@ -91,9 +91,7 @@ const confirmPayment = async (transactionId: string, valId: string) => {
   }
 
   const result = await prisma.$transaction(async (tx) => {
-    const booking = await tx.booking.findUnique({
-      where: { id: payment.bookingId },
-    });
+    const booking = await tx.booking.findUnique({ where: { id: payment.bookingId } });
 
     if (!booking) {
       throw new AppError(httpStatus.NOT_FOUND, "Booking not found");
@@ -102,7 +100,7 @@ const confirmPayment = async (transactionId: string, valId: string) => {
     if (booking.status === "CANCELLED") {
       await tx.payment.update({
         where: { transactionId },
-        data: { status: "FAILED", gatewayResponse: validation },
+        data: { status: "FAILED", gatewayData: validation },
       });
       throw new AppError(
         httpStatus.BAD_REQUEST,
@@ -116,7 +114,7 @@ const confirmPayment = async (transactionId: string, valId: string) => {
 
     const updatedPayment = await tx.payment.update({
       where: { transactionId },
-      data: { status: "PAID", gatewayResponse: validation },
+      data: { status: "PAID", paidAt: new Date(), gatewayData: validation },
     });
 
     const updatedBooking = await tx.booking.update({
@@ -130,22 +128,22 @@ const confirmPayment = async (transactionId: string, valId: string) => {
     });
 
     if (booking.rentalType === "ROOM" && booking.roomId) {
-      await tx.room.update({
-        where: { id: booking.roomId },
-        data: { status: "OCCUPIED" },
-      });
+      await tx.room.update({ where: { id: booking.roomId }, data: { status: "OCCUPIED" } });
     } else {
-      await tx.flat.update({
-        where: { id: booking.flatId },
-        data: { status: "OCCUPIED" },
-      });
+      await tx.flat.update({ where: { id: booking.flatId }, data: { status: "OCCUPIED" } });
     }
 
-    return {
-      payment: updatedPayment,
-      booking: updatedBooking,
-      bookingId: booking.id,
-    };
+    await tx.auditLog.create({
+      data: {
+        userId: booking.tenantId,
+        action: "PAYMENT",
+        entity: "Payment",
+        entityId: updatedPayment.id,
+        description: `Payment confirmed for booking ${booking.id}`,
+      },
+    });
+
+    return { payment: updatedPayment, booking: updatedBooking, bookingId: booking.id };
   });
 
   return result;

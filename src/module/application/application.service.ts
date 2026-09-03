@@ -43,7 +43,6 @@ const createApplication = async (tenantId: string, payload: ICreateApplicationPa
     throw new AppError(httpStatus.BAD_REQUEST, "Rent amount is not set for this listing");
   }
 
-  // duplicate active application check — service-layer, DB constraint দিয়ে সম্ভব না
   const existingActive = await prisma.application.findFirst({
     where: {
       tenantId,
@@ -120,7 +119,7 @@ const getMyApplications = async (tenantId: string) => {
   });
 };
 
-// Owner: তার property গুলোর জন্য আসা সব application
+
 const getOwnerApplications = async (ownerId: string) => {
   return prisma.application.findMany({
     where: {
@@ -154,7 +153,7 @@ const getApplicationById = async (id: string) => {
   return application;
 };
 
-// Owner approve — transaction-safe: Application APPROVED + Booking তৈরি + Room/Flat RESERVED
+
 const approveApplication = async (applicationId: string, ownerId: string) => {
   return prisma.$transaction(async (tx) => {
     const application = await tx.application.findFirst({
@@ -174,7 +173,6 @@ const approveApplication = async (applicationId: string, ownerId: string) => {
       throw new AppError(httpStatus.BAD_REQUEST, `Cannot approve an application with status ${application.status}`);
     }
 
-    // race-condition guard: এই সময়ের মধ্যে room/flat অন্য কোনো application-এ RESERVED হয়ে গেছে কিনা
     if (application.rentalType === "ROOM") {
       if (application.room?.status !== "AVAILABLE") {
         throw new AppError(httpStatus.CONFLICT, "This room is no longer available");
@@ -211,6 +209,16 @@ const approveApplication = async (applicationId: string, ownerId: string) => {
       });
     }
 
+    await tx.auditLog.create({
+      data: {
+        userId: ownerId,
+        action: "APPROVE",
+        entity: "Application",
+        entityId: applicationId,
+        description: `Application approved, booking ${booking.id} created`,
+      },
+    });
+
     return { application: updatedApplication, booking };
   });
 };
@@ -233,10 +241,22 @@ const rejectApplication = async (applicationId: string, ownerId: string) => {
     throw new AppError(httpStatus.BAD_REQUEST, `Cannot reject an application with status ${application.status}`);
   }
 
-  return prisma.application.update({
+  const updated = await prisma.application.update({
     where: { id: applicationId },
     data: { status: "REJECTED" },
   });
+
+  await prisma.auditLog.create({
+    data: {
+      userId: ownerId,
+      action: "REJECT",
+      entity: "Application",
+      entityId: applicationId,
+      description: "Application rejected by owner",
+    },
+  });
+
+  return updated;
 };
 
 const cancelApplication = async (applicationId: string, tenantId: string) => {

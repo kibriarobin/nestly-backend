@@ -107,10 +107,7 @@ const cancelBooking = async (bookingId: string, tenantId: string) => {
     }
 
     if (booking.tenantId !== tenantId) {
-      throw new AppError(
-        httpStatus.FORBIDDEN,
-        "You can only cancel your own booking",
-      );
+      throw new AppError(httpStatus.FORBIDDEN, "You can only cancel your own booking");
     }
 
     if (booking.status !== "PENDING") {
@@ -141,6 +138,16 @@ const cancelBooking = async (bookingId: string, tenantId: string) => {
         data: { status: "AVAILABLE" },
       });
     }
+
+    await tx.auditLog.create({
+      data: {
+        userId: tenantId,
+        action: "UPDATE",
+        entity: "Booking",
+        entityId: bookingId,
+        description: "Booking cancelled by tenant",
+      },
+    });
 
     return updatedBooking;
   });
