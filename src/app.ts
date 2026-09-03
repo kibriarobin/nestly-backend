@@ -12,6 +12,7 @@ import { RoomRoutes } from "./module/room/room.route";
 import { ApplicationRoutes } from "./module/application/application.route";
 import { BookingRoutes } from "./module/booking/booking.route";
 import { AdminRoutes } from "./module/admin/admin.route";
+import { UserRoutes } from "./module/user/user.route";
 
 const app: Application = express();
 
@@ -32,6 +33,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", AuthRoutes);
+
+app.use("/api/users", UserRoutes);
 
 app.use("/api/properties", PropertyRoutes);
 

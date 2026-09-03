@@ -31,15 +31,6 @@ const login = catchAsync(async (req, res) => {
   });
 });
 
-const getMe = catchAsync(async (req, res) => {
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Profile retrieved successfully",
-    data: req.user,
-  });
-});
-
 const refreshToken = catchAsync(async (req, res) => {
   const token = req.cookies?.refreshToken ?? req.body?.refreshToken;
 
@@ -70,7 +61,6 @@ const logout = catchAsync(async (req, res) => {
 export const AuthController = {
   register,
   login,
-  getMe,
   refreshToken,
   logout,
 };
