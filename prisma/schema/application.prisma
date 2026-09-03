@@ -16,7 +16,6 @@ model Application {
   tenant  User     @relation(fields: [tenantId], references: [id])
   flat    Flat     @relation(fields: [flatId], references: [id])
   room    Room?    @relation(fields: [roomId], references: [id])
-  payment Payment?
   booking Booking?
 
   createdAt DateTime  @default(now())
