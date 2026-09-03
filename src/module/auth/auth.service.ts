@@ -71,6 +71,27 @@ const loginUser = async (payload: ILoginPayload) => {
   return { user: sanitizeUser(user), tokens };
 };
 
+const generateTokens = (payload: {
+  userId: string;
+  email: string;
+  name: string;
+  role: string;
+}): IAuthTokens => {
+  const accessToken = jwtUtils.createToken(
+    payload,
+    config.jwt_access_secret,
+    config.jwt_access_expiration,
+  );
+
+  const refreshToken = jwtUtils.createToken(
+    payload,
+    config.jwt_refresh_secret,
+    config.jwt_refresh_expiration,
+  );
+
+  return { accessToken, refreshToken };
+};
+
 const refreshToken = async (token: string) => {
   if (!token) {
     throw new AppError(httpStatus.UNAUTHORIZED, "No refresh token provided. Please log in again.");
@@ -107,5 +128,6 @@ const refreshToken = async (token: string) => {
 export const AuthService = {
   registerUser,
   loginUser,
+  generateTokens,
   refreshToken,
 };

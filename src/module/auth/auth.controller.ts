@@ -31,6 +31,30 @@ const login = catchAsync(async (req, res) => {
   });
 });
 
+const googleCallback = catchAsync(async (req, res) => {
+  const user = req.user as unknown as { id: string; email: string; role: string; name: string };
+
+  const tokens = AuthService.generateTokens({
+    userId: user.id,
+    email: user.email,
+    name: user.name,
+    role: user.role,
+  });
+
+  res.cookie("accessToken", tokens.accessToken, { httpOnly: true });
+  res.cookie("refreshToken", tokens.refreshToken, { httpOnly: true });
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Logged in with Google successfully",
+    data: {
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+      tokens,
+    },
+  });
+});
+
 const refreshToken = catchAsync(async (req, res) => {
   const token = req.cookies?.refreshToken ?? req.body?.refreshToken;
 
@@ -61,6 +85,7 @@ const logout = catchAsync(async (req, res) => {
 export const AuthController = {
   register,
   login,
+  googleCallback,
   refreshToken,
   logout,
 };
