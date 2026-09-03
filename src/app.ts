@@ -14,6 +14,8 @@ import { BookingRoutes } from "./module/booking/booking.route";
 import { AdminRoutes } from "./module/admin/admin.route";
 import { UserRoutes } from "./module/user/user.route";
 import { ReviewRoutes } from "./module/review/review.route";
+import { globalLimiter } from "./middleware/rateLimiter";
+import { paymentRoutes } from "./module/payment/payment.route";
 
 const app: Application = express();
 
@@ -28,6 +30,7 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(globalLimiter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Nestly server is running");
@@ -44,6 +47,8 @@ app.use("/api/flats", FlatRoutes);
 app.use("/api/rooms", RoomRoutes);
 
 app.use("/api/applications", ApplicationRoutes);
+
+app.use("/api/payments", paymentRoutes);
 
 app.use("/api/bookings", BookingRoutes);
 
