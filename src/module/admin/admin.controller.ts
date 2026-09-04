@@ -3,8 +3,9 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { pick } from "../../utils/pick";
 import { AdminService } from "./admin.service";
+import { Request, Response } from "express";
 
-const getAllUsers = catchAsync(async (req, res) => {
+const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, ["role", "status", "searchTerm"]);
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
@@ -20,7 +21,7 @@ const getAllUsers = catchAsync(async (req, res) => {
   });
 });
 
-const updateUserStatus = catchAsync(async (req, res) => {
+const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
   const result = await AdminService.updateUserStatus(
     req.user!.userId,
     req.params.userId as string,
@@ -35,7 +36,7 @@ const updateUserStatus = catchAsync(async (req, res) => {
   });
 });
 
-const getDashboardStats = catchAsync(async (req, res) => {
+const getDashboardStats = catchAsync(async (req: Request, res: Response) => {
   const result = await AdminService.getDashboardStats();
 
   sendResponse(res, {
@@ -46,18 +47,20 @@ const getDashboardStats = catchAsync(async (req, res) => {
   });
 });
 
-const getOwnerPropertyStats = catchAsync(async (req, res) => {
-  const result = await AdminService.getOwnerPropertyStats();
+const getOwnerPropertyStats = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await AdminService.getOwnerPropertyStats();
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Owner-wise property stats retrieved successfully",
-    data: result,
-  });
-});
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Owner-wise property stats retrieved successfully",
+      data: result,
+    });
+  },
+);
 
-const getAuditLogs = catchAsync(async (req, res) => {
+const getAuditLogs = catchAsync(async (req: Request, res: Response) => {
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 20;
 

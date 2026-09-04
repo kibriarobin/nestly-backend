@@ -3,8 +3,9 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { pick } from "../../utils/pick";
 import { RoomService } from "./room.service";
+import { Request, Response } from "express";
 
-const createRoom = catchAsync(async (req, res) => {
+const createRoom = catchAsync(async (req: Request, res: Response) => {
   const result = await RoomService.createRoom(req.user!.userId, req.body);
 
   sendResponse(res, {
@@ -15,7 +16,7 @@ const createRoom = catchAsync(async (req, res) => {
   });
 });
 
-const getAllRooms = catchAsync(async (req, res) => {
+const getAllRooms = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, ["flatId", "status", "searchTerm"]);
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
@@ -36,7 +37,7 @@ const getAllRooms = catchAsync(async (req, res) => {
   });
 });
 
-const getMyRooms = catchAsync(async (req, res) => {
+const getMyRooms = catchAsync(async (req: Request, res: Response) => {
   const result = await RoomService.getMyRooms(req.user!.userId);
 
   sendResponse(res, {
@@ -47,7 +48,7 @@ const getMyRooms = catchAsync(async (req, res) => {
   });
 });
 
-const getRoomById = catchAsync(async (req, res) => {
+const getRoomById = catchAsync(async (req: Request, res: Response) => {
   const result = await RoomService.getRoomById(req.params.roomId as string);
 
   sendResponse(res, {
@@ -58,7 +59,7 @@ const getRoomById = catchAsync(async (req, res) => {
   });
 });
 
-const updateRoom = catchAsync(async (req, res) => {
+const updateRoom = catchAsync(async (req: Request, res: Response) => {
   const result = await RoomService.updateRoom(
     req.params.roomId as string,
     req.user!.userId,
@@ -73,7 +74,7 @@ const updateRoom = catchAsync(async (req, res) => {
   });
 });
 
-const deleteRoom = catchAsync(async (req, res) => {
+const deleteRoom = catchAsync(async (req: Request, res: Response) => {
   const result = await RoomService.deleteRoom(
     req.params.roomId as string,
     req.user!.userId,

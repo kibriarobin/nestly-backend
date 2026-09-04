@@ -27,7 +27,9 @@ const confirmPayment = catchAsync(async (req: Request, res: Response) => {
 
   try {
     const result = await paymentService.confirmPayment(tranId, valId);
-    return res.redirect(`${config.frontend_url}/payment/success?bookingId=${result.bookingId}`);
+    return res.redirect(
+      `${config.frontend_url}/payment/success?bookingId=${result.bookingId}`,
+    );
   } catch (error) {
     return res.redirect(`${config.frontend_url}/payment/cancel`);
   }

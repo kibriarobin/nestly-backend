@@ -3,8 +3,9 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { pick } from "../../utils/pick";
 import { BookingService } from "./booking.service";
+import { Request, Response } from "express";
 
-const getAllBookings = catchAsync(async (req, res) => {
+const getAllBookings = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, ["status", "rentalType"]);
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
@@ -20,7 +21,7 @@ const getAllBookings = catchAsync(async (req, res) => {
   });
 });
 
-const getMyBookings = catchAsync(async (req, res) => {
+const getMyBookings = catchAsync(async (req: Request, res: Response) => {
   const result = await BookingService.getMyBookings(req.user!.userId);
 
   sendResponse(res, {
@@ -31,7 +32,7 @@ const getMyBookings = catchAsync(async (req, res) => {
   });
 });
 
-const getOwnerBookings = catchAsync(async (req, res) => {
+const getOwnerBookings = catchAsync(async (req: Request, res: Response) => {
   const result = await BookingService.getOwnerBookings(req.user!.userId);
 
   sendResponse(res, {
@@ -42,7 +43,7 @@ const getOwnerBookings = catchAsync(async (req, res) => {
   });
 });
 
-const getBookingById = catchAsync(async (req, res) => {
+const getBookingById = catchAsync(async (req: Request, res: Response) => {
   const result = await BookingService.getBookingById(
     req.params.bookingId as string,
   );
@@ -55,7 +56,7 @@ const getBookingById = catchAsync(async (req, res) => {
   });
 });
 
-const cancelBooking = catchAsync(async (req, res) => {
+const cancelBooking = catchAsync(async (req: Request, res: Response) => {
   const result = await BookingService.cancelBooking(
     req.params.bookingId as string,
     req.user!.userId,

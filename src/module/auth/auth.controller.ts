@@ -2,12 +2,20 @@ import httpStatus from "http-status";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { AuthService } from "./auth.service";
+import { Request, Response } from "express";
+import config from "../../config";
 
-const register = catchAsync(async (req, res) => {
+const cookieOptions = {
+  httpOnly: true,
+  secure: config.node_env === "production",
+  sameSite: (config.node_env === "production" ? "none" : "lax") as "none" | "lax",
+};
+
+const register = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.registerUser(req.body);
 
-  res.cookie("accessToken", result.tokens.accessToken, { httpOnly: true });
-  res.cookie("refreshToken", result.tokens.refreshToken, { httpOnly: true });
+  res.cookie("accessToken", result.tokens.accessToken, cookieOptions);
+  res.cookie("refreshToken", result.tokens.refreshToken, cookieOptions);
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -17,11 +25,11 @@ const register = catchAsync(async (req, res) => {
   });
 });
 
-const login = catchAsync(async (req, res) => {
+const login = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.loginUser(req.body);
 
-  res.cookie("accessToken", result.tokens.accessToken, { httpOnly: true });
-  res.cookie("refreshToken", result.tokens.refreshToken, { httpOnly: true });
+  res.cookie("accessToken", result.tokens.accessToken, cookieOptions);
+  res.cookie("refreshToken", result.tokens.refreshToken, cookieOptions);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -31,8 +39,13 @@ const login = catchAsync(async (req, res) => {
   });
 });
 
-const googleCallback = catchAsync(async (req, res) => {
-  const user = req.user as unknown as { id: string; email: string; role: string; name: string };
+const googleCallback = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user as unknown as {
+    id: string;
+    email: string;
+    role: string;
+    name: string;
+  };
 
   const tokens = AuthService.generateTokens({
     userId: user.id,
@@ -41,26 +54,31 @@ const googleCallback = catchAsync(async (req, res) => {
     role: user.role,
   });
 
-  res.cookie("accessToken", tokens.accessToken, { httpOnly: true });
-  res.cookie("refreshToken", tokens.refreshToken, { httpOnly: true });
+  res.cookie("accessToken", tokens.accessToken, cookieOptions);
+  res.cookie("refreshToken", tokens.refreshToken, cookieOptions);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Logged in with Google successfully",
     data: {
-      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
       tokens,
     },
   });
 });
 
-const refreshToken = catchAsync(async (req, res) => {
+const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const token = req.cookies?.refreshToken ?? req.body?.refreshToken;
 
   const result = await AuthService.refreshToken(token);
 
-  res.cookie("accessToken", result.accessToken, { httpOnly: true });
+  res.cookie("accessToken", result.accessToken, cookieOptions);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -70,9 +88,9 @@ const refreshToken = catchAsync(async (req, res) => {
   });
 });
 
-const logout = catchAsync(async (req, res) => {
-  res.clearCookie("accessToken");
-  res.clearCookie("refreshToken");
+const logout = catchAsync(async (req: Request, res: Response) => {
+  res.clearCookie("accessToken", cookieOptions);
+  res.clearCookie("refreshToken", cookieOptions);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

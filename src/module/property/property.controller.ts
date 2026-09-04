@@ -3,8 +3,9 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { PropertyService } from "./property.service";
 import { pick } from "../../utils/pick";
+import { Request, Response } from "express";
 
-const createProperty = catchAsync(async (req, res) => {
+const createProperty = catchAsync(async (req: Request, res: Response) => {
   const result = await PropertyService.createProperty(
     req.user!.userId,
     req.body,
@@ -13,12 +14,12 @@ const createProperty = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
-    message: "Property created successfully. Awaiting admin approval.",
+    message: "Property created successfully. waiting for admin approval.",
     data: result,
   });
 });
 
-const getAllProperties = catchAsync(async (req, res) => {
+const getAllProperties = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, ["city", "status", "searchTerm"]);
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
@@ -41,7 +42,7 @@ const getAllProperties = catchAsync(async (req, res) => {
   });
 });
 
-const getMyProperties = catchAsync(async (req, res) => {
+const getMyProperties = catchAsync(async (req: Request, res: Response) => {
   const result = await PropertyService.getMyProperties(req.user!.userId);
 
   sendResponse(res, {
@@ -52,7 +53,7 @@ const getMyProperties = catchAsync(async (req, res) => {
   });
 });
 
-const getPropertyById = catchAsync(async (req, res) => {
+const getPropertyById = catchAsync(async (req: Request, res: Response) => {
   const propertyId = req.params.propertyId as string;
   const result = await PropertyService.getPropertyById(propertyId);
 
@@ -64,7 +65,7 @@ const getPropertyById = catchAsync(async (req, res) => {
   });
 });
 
-const updateProperty = catchAsync(async (req, res) => {
+const updateProperty = catchAsync(async (req: Request, res: Response) => {
   const propertyId = req.params.propertyId as string;
   const result = await PropertyService.updateProperty(
     propertyId,
@@ -80,7 +81,7 @@ const updateProperty = catchAsync(async (req, res) => {
   });
 });
 
-const deleteProperty = catchAsync(async (req, res) => {
+const deleteProperty = catchAsync(async (req: Request, res: Response) => {
   const propertyId = req.params.propertyId as string;
   const result = await PropertyService.deleteProperty(
     propertyId,
@@ -95,7 +96,7 @@ const deleteProperty = catchAsync(async (req, res) => {
   });
 });
 
-const updatePropertyStatus = catchAsync(async (req, res) => {
+const updatePropertyStatus = catchAsync(async (req: Request, res: Response) => {
   const propertyId = req.params.propertyId as string;
   const result = await PropertyService.updatePropertyStatus(
     propertyId,

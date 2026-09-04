@@ -3,9 +3,13 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { pick } from "../../utils/pick";
 import { ApplicationService } from "./application.service";
+import { Request, Response } from "express";
 
-const createApplication = catchAsync(async (req, res) => {
-  const result = await ApplicationService.createApplication(req.user!.userId, req.body);
+const createApplication = catchAsync(async (req: Request, res: Response) => {
+  const result = await ApplicationService.createApplication(
+    req.user!.userId,
+    req.body,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -15,12 +19,15 @@ const createApplication = catchAsync(async (req, res) => {
   });
 });
 
-const getAllApplications = catchAsync(async (req, res) => {
+const getAllApplications = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, ["status", "rentalType", "flatId"]);
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
 
-  const result = await ApplicationService.getAllApplications(filters, { page, limit });
+  const result = await ApplicationService.getAllApplications(filters, {
+    page,
+    limit,
+  });
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -31,7 +38,7 @@ const getAllApplications = catchAsync(async (req, res) => {
   });
 });
 
-const getMyApplications = catchAsync(async (req, res) => {
+const getMyApplications = catchAsync(async (req: Request, res: Response) => {
   const result = await ApplicationService.getMyApplications(req.user!.userId);
 
   sendResponse(res, {
@@ -42,8 +49,10 @@ const getMyApplications = catchAsync(async (req, res) => {
   });
 });
 
-const getOwnerApplications = catchAsync(async (req, res) => {
-  const result = await ApplicationService.getOwnerApplications(req.user!.userId);
+const getOwnerApplications = catchAsync(async (req: Request, res: Response) => {
+  const result = await ApplicationService.getOwnerApplications(
+    req.user!.userId,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -53,8 +62,10 @@ const getOwnerApplications = catchAsync(async (req, res) => {
   });
 });
 
-const getApplicationById = catchAsync(async (req, res) => {
-  const result = await ApplicationService.getApplicationById(req.params.applicationId as string);
+const getApplicationById = catchAsync(async (req: Request, res: Response) => {
+  const result = await ApplicationService.getApplicationById(
+    req.params.applicationId as string,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -64,7 +75,7 @@ const getApplicationById = catchAsync(async (req, res) => {
   });
 });
 
-const approveApplication = catchAsync(async (req, res) => {
+const approveApplication = catchAsync(async (req: Request, res: Response) => {
   const result = await ApplicationService.approveApplication(
     req.params.applicationId as string,
     req.user!.userId,
@@ -73,12 +84,13 @@ const approveApplication = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Application approved successfully. Booking created — awaiting payment.",
+    message:
+      "Application approved successfully. Booking created — awaiting payment.",
     data: result,
   });
 });
 
-const rejectApplication = catchAsync(async (req, res) => {
+const rejectApplication = catchAsync(async (req: Request, res: Response) => {
   const result = await ApplicationService.rejectApplication(
     req.params.applicationId as string,
     req.user!.userId,
@@ -92,7 +104,7 @@ const rejectApplication = catchAsync(async (req, res) => {
   });
 });
 
-const cancelApplication = catchAsync(async (req, res) => {
+const cancelApplication = catchAsync(async (req: Request, res: Response) => {
   const result = await ApplicationService.cancelApplication(
     req.params.applicationId as string,
     req.user!.userId,

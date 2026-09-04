@@ -2,8 +2,9 @@ import httpStatus from "http-status";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { ReviewService } from "./review.service";
+import { Request, Response } from "express";
 
-const createReview = catchAsync(async (req, res) => {
+const createReview = catchAsync(async (req: Request, res: Response) => {
   const result = await ReviewService.createReview(req.user!.userId, req.body);
 
   sendResponse(res, {
@@ -14,24 +15,31 @@ const createReview = catchAsync(async (req, res) => {
   });
 });
 
-const getReviewsForProperty = catchAsync(async (req, res) => {
-  const propertyId = req.params.propertyId as string;
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
+const getReviewsForProperty = catchAsync(
+  async (req: Request, res: Response) => {
+    const propertyId = req.params.propertyId as string;
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
 
-  const result = await ReviewService.getReviewsForProperty(propertyId, { page, limit });
+    const result = await ReviewService.getReviewsForProperty(propertyId, {
+      page,
+      limit,
+    });
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Reviews retrieved successfully",
-    data: { averageRating: result.averageRating, reviews: result.data },
-    meta: result.meta,
-  });
-});
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Reviews retrieved successfully",
+      data: { averageRating: result.averageRating, reviews: result.data },
+      meta: result.meta,
+    });
+  },
+);
 
-const getReviewById = catchAsync(async (req, res) => {
-  const result = await ReviewService.getReviewById(req.params.reviewId as string);
+const getReviewById = catchAsync(async (req: Request, res: Response) => {
+  const result = await ReviewService.getReviewById(
+    req.params.reviewId as string,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -41,7 +49,7 @@ const getReviewById = catchAsync(async (req, res) => {
   });
 });
 
-const updateReview = catchAsync(async (req, res) => {
+const updateReview = catchAsync(async (req: Request, res: Response) => {
   const result = await ReviewService.updateReview(
     req.params.reviewId as string,
     req.user!.userId,
@@ -56,8 +64,11 @@ const updateReview = catchAsync(async (req, res) => {
   });
 });
 
-const deleteReview = catchAsync(async (req, res) => {
-  const result = await ReviewService.deleteReview(req.params.reviewId as string, req.user!.userId);
+const deleteReview = catchAsync(async (req: Request, res: Response) => {
+  const result = await ReviewService.deleteReview(
+    req.params.reviewId as string,
+    req.user!.userId,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

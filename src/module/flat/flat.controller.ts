@@ -3,8 +3,9 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { pick } from "../../utils/pick";
 import { FlatService } from "./flat.service";
+import { Request, Response } from "express";
 
-const createFlat = catchAsync(async (req, res) => {
+const createFlat = catchAsync(async (req: Request, res: Response) => {
   const result = await FlatService.createFlat(req.user!.userId, req.body);
 
   sendResponse(res, {
@@ -15,14 +16,22 @@ const createFlat = catchAsync(async (req, res) => {
   });
 });
 
-const getAllFlats = catchAsync(async (req, res) => {
-  const filters = pick(req.query, ["propertyId", "status", "city", "searchTerm"]);
+const getAllFlats = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, [
+    "propertyId",
+    "status",
+    "city",
+    "searchTerm",
+  ]);
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
 
   const onlyApproved = req.user?.role !== "ADMIN" && req.user?.role !== "OWNER";
 
-  const result = await FlatService.getAllFlats({ ...filters, onlyApproved }, { page, limit });
+  const result = await FlatService.getAllFlats(
+    { ...filters, onlyApproved },
+    { page, limit },
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -33,7 +42,7 @@ const getAllFlats = catchAsync(async (req, res) => {
   });
 });
 
-const getMyFlats = catchAsync(async (req, res) => {
+const getMyFlats = catchAsync(async (req: Request, res: Response) => {
   const result = await FlatService.getMyFlats(req.user!.userId);
 
   sendResponse(res, {
@@ -44,7 +53,7 @@ const getMyFlats = catchAsync(async (req, res) => {
   });
 });
 
-const getFlatById = catchAsync(async (req, res) => {
+const getFlatById = catchAsync(async (req: Request, res: Response) => {
   const result = await FlatService.getFlatById(req.params.flatId as string);
 
   sendResponse(res, {
@@ -55,7 +64,7 @@ const getFlatById = catchAsync(async (req, res) => {
   });
 });
 
-const updateFlat = catchAsync(async (req, res) => {
+const updateFlat = catchAsync(async (req: Request, res: Response) => {
   const result = await FlatService.updateFlat(
     req.params.flatId as string,
     req.user!.userId,
@@ -70,7 +79,7 @@ const updateFlat = catchAsync(async (req, res) => {
   });
 });
 
-const deleteFlat = catchAsync(async (req, res) => {
+const deleteFlat = catchAsync(async (req: Request, res: Response) => {
   const result = await FlatService.deleteFlat(
     req.params.flatId as string,
     req.user!.userId,

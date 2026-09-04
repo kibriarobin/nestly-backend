@@ -2,8 +2,9 @@ import httpStatus from "http-status";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { UserService } from "./user.service";
+import { Request, Response } from "express";
 
-const getMyProfile = catchAsync(async (req, res) => {
+const getMyProfile = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getMyProfile(req.user!.userId);
 
   sendResponse(res, {
@@ -14,7 +15,7 @@ const getMyProfile = catchAsync(async (req, res) => {
   });
 });
 
-const updateMyProfile = catchAsync(async (req, res) => {
+const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.updateMyProfile(req.user!.userId, req.body);
 
   sendResponse(res, {
