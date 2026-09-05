@@ -1,0 +1,1122 @@
+{
+  "info": {
+    "_postman_id": "7ca78d13-4e3a-41b7-a955-7cd2f17312c7",
+    "name": "nestly",
+    "url": "https://nestly-backend.vercel.app/api/v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54683157",
+    "_collection_link": "https://go.postman.co/collection/54683157-7ca78d13-4e3a-41b7-a955-7cd2f17312c7?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Test Tenant\",\r\n  \"email\": \"test@tenant.com\",\r\n  \"password\": \"123456\",\r\n  \"role\": \"TENANT\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"robin@gmail.com\",\r\n    \"password\": \"robin12345\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh-token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh-token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Google Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "https://nestly-backend.vercel.app/api/v1/auth/google",
+              "protocol": "https",
+              "host": [
+                "nestly-backend",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "google"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Property",
+      "item": [
+        {
+          "name": "Create Property",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Chittagong Comfort Homes\",\r\n  \"address\": \"Plot 45, GEC Circle\",\r\n  \"city\": \"Chittagong\",\r\n  \"description\": \"Affordable housing near university area\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/properties",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "My Properties",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/properties/my-properties",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties",
+                "my-properties"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Public Property List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/properties",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties"
+              ],
+              "query": [
+                {
+                  "key": "searchTerm",
+                  "value": "homes",
+                  "disabled": true
+                },
+                {
+                  "key": "city",
+                  "value": "dhaka",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Property by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/properties/b5499897-ee1d-4a52-bd1e-ac21f2921b81",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties",
+                "b5499897-ee1d-4a52-bd1e-ac21f2921b81"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Property",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"description\": \"Updated: recently renovated, near the lake\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/properties/87c6e6fb-78dd-4fdf-a4b0-e0b5f4d8f354",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties",
+                "87c6e6fb-78dd-4fdf-a4b0-e0b5f4d8f354"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Approve Property",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\": \"APPROVED\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/properties/status/b5499897-ee1d-4a52-bd1e-ac21f2921b81",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties",
+                "status",
+                "b5499897-ee1d-4a52-bd1e-ac21f2921b81"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Property",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/properties/87c6e6fb-78dd-4fdf-a4b0-e0b5f4d8f354",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties",
+                "87c6e6fb-78dd-4fdf-a4b0-e0b5f4d8f354"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update user profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Kibria Robin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Flat",
+      "item": [
+        {
+          "name": "Create flat",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"propertyId\": \"55f8aa15-d9ee-4ec9-be31-7860df2c4e60\",\r\n  \"name\": \"Flat 5C\",\r\n  \"floor\": 5,\r\n  \"rent\": 30000,\r\n  \"description\": \"Spacious 3-bedroom flat with rooftop access\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/flats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all flat",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/flats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get owner flat",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/flats/my-flats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flats",
+                "my-flats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get single flat",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/flats/d3076c0c-cf55-44f9-b934-17627e3ba35b",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flats",
+                "d3076c0c-cf55-44f9-b934-17627e3ba35b"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update flat",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/flats/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flats",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete flat",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/flats/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flats",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Room",
+      "item": [
+        {
+          "name": "Create room",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/flats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all rooms",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/rooms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rooms"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get owner rooms",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/rooms/my-rooms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rooms",
+                "my-rooms"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get single room",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/rooms/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rooms",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update room",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/rooms/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rooms",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete room",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/rooms/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rooms",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Application",
+      "item": [
+        {
+          "name": "Create application",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"flatId\": \"5de0ce2a-1644-4335-88ca-643744496aad\",\r\n  \"rentalType\": \"FLAT\",\r\n  \"message\": \"Interested in renting this flat for my family\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/applications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all application admin",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get my application tenant",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications/my-applications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications",
+                "my-applications"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get owner application",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications/owner-applications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications",
+                "owner-applications"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get single application",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Approve application",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications/approve/413646e4-5518-486d-8aff-b60adfb81ff8",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications",
+                "approve",
+                "413646e4-5518-486d-8aff-b60adfb81ff8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reject application",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications/reject/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications",
+                "reject",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel application",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications/cancel/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications",
+                "cancel",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Booking",
+      "item": [
+        {
+          "name": "Get all bookings admin",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get tenant booking",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/my-bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings",
+                "my-bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get owner bookings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/owner-bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings",
+                "owner-bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get single booking",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel booking",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/cancel/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings",
+                "cancel",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Review",
+      "item": [
+        {
+          "name": "Create review",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"propertyId\": \"55f8aa15-d9ee-4ec9-be31-7860df2c4e60\",\r\n  \"flatId\": \"5de0ce2a-1644-4335-88ca-643744496aad\",\r\n  \"rating\": 5,\r\n  \"comment\": \"Great flat, very responsive owner!\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get review property",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reviews/property/55f8aa15-d9ee-4ec9-be31-7860df2c4e60",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews",
+                "property",
+                "55f8aa15-d9ee-4ec9-be31-7860df2c4e60"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get single review",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reviews/a636e3a6-e39a-451d-bbbe-4e9a67c4b9b2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews",
+                "a636e3a6-e39a-451d-bbbe-4e9a67c4b9b2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update review",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reviews/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete review",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reviews/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get all users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update user status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/status/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "status",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get dashboard stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard-stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard-stats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get owner stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/owner-stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "owner-stats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get audit logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/audit-logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "audit-logs"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "item": [
+        {
+          "name": "Create payment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n{\r\n  \"bookingId\": \"bd364102-2484-4835-95e2-f14691be65a8\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get tenant all payment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get tenant single payment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/payments/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

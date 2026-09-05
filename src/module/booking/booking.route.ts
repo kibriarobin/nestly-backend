@@ -26,7 +26,7 @@ router.get(
 );
 
 router.patch(
-  "/:bookingId/cancel",
+  "/cancel/:bookingId",
   auth(UserRole.TENANT),
   BookingController.cancelBooking,
 );

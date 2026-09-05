@@ -35,19 +35,19 @@ router.get(
 );
 
 router.patch(
-  "/:applicationId/approve",
+  "/approve/:applicationId",
   auth(UserRole.OWNER),
   ApplicationController.approveApplication,
 );
 
 router.patch(
-  "/:applicationId/reject",
+  "/reject/:applicationId",
   auth(UserRole.OWNER),
   ApplicationController.rejectApplication,
 );
 
 router.patch(
-  "/:applicationId/cancel",
+  "/cancel/:applicationId",
   auth(UserRole.TENANT),
   ApplicationController.cancelApplication,
 );

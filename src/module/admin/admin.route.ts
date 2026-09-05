@@ -10,7 +10,7 @@ const router = Router();
 router.get("/users", auth(UserRole.ADMIN), AdminController.getAllUsers);
 
 router.patch(
-  "/users/:userId/status",
+  "/users/status/:userId",
   auth(UserRole.ADMIN),
   validateRequest(AdminValidation.updateUserStatusValidationSchema),
   AdminController.updateUserStatus,
