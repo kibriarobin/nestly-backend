@@ -111,11 +111,11 @@ prisma/
 ```
 
 Each module follows a consistent pattern:
-- **route.ts** — endpoint definitions, auth/validation middleware
-- **controller.ts** — request/response handling only (thin layer)
-- **service.ts** — business logic, Prisma queries, transactions
-- **validation.ts** — Zod schemas
-- **interface.ts** — TypeScript types
+- **route.ts** - endpoint definitions, auth/validation middleware
+- **controller.ts** - request/response handling only (thin layer)
+- **service.ts** - business logic, Prisma queries, transactions
+- **validation.ts** - Zod schemas
+- **interface.ts** - TypeScript types
 
 **Conventions:** Controllers never call Prisma directly. Services never touch `req`/`res`. Request bodies are explicitly destructured before reaching Prisma (never spread) to prevent privilege escalation.
 
