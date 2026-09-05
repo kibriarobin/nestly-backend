@@ -198,7 +198,7 @@ JWT_REFRESH_SECRET=
 JWT_ACCESS_EXPIRATION=15m
 JWT_REFRESH_EXPIRATION=7d
 
-BCRYPT_SALT_ROUNDS=12
+BCRYPT_SALT_ROUNDS=10
 
 SSL_STORE_ID=
 SSL_STORE_PASSWORD=
@@ -252,7 +252,7 @@ Error:
 ## Authentication & Roles
 
 - **Email/Password:** register with a chosen role (`OWNER` or `TENANT` - `ADMIN` is not self-registrable)
-- **Google OAuth:** `GET /api/v1/auth/google` — must be opened in a **browser**, not Postman, since it requires an interactive Google consent screen. New Google sign-ups default to `TENANT`.
+- **Google OAuth:** `GET /api/v1/auth/google` - must be opened in a **browser**, not Postman, since it requires an interactive Google consent screen. New Google sign-ups default to `TENANT`.
 - **JWT:** access token (short-lived) + refresh token (long-lived), delivered via httpOnly cookies and in the response body
 - **Authorization:** role-based middleware (`auth(...roles)`) protects every private route; ownership checks (e.g. an owner can only modify their own property) are enforced in the service layer
 
