@@ -180,7 +180,10 @@ const deleteFlat = async (id: string, ownerId: string) => {
 
   const deleted = await prisma.flat.update({
     where: { id },
-    data: { deletedAt: new Date() },
+    data: {
+      deletedAt: new Date(),
+      status: "INACTIVE",
+    },
   });
 
   return deleted;

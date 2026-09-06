@@ -174,7 +174,10 @@ const deleteRoom = async (id: string, ownerId: string) => {
 
   const deleted = await prisma.room.update({
     where: { id },
-    data: { deletedAt: new Date() },
+    data: {
+      deletedAt: new Date(),
+      status: "INACTIVE",
+    },
   });
 
   return deleted;
