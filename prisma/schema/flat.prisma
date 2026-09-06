@@ -3,7 +3,7 @@ model Flat {
   propertyId  String
   name        String
   floor       Int?
-  rent        Decimal?
+  rent        Decimal?           @db.Decimal(10, 2)
   description String?
   status      AvailabilityStatus @default(AVAILABLE)
 

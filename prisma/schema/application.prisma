@@ -5,7 +5,7 @@ model Application {
   roomId     String?
   rentalType RentalType
 
-  rent   Decimal
+  rent   Decimal           @db.Decimal(10, 2)
   status ApplicationStatus @default(PENDING)
 
   message     String?

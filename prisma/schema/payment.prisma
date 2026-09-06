@@ -1,22 +1,22 @@
 model Payment {
-    id            String        @id @default(uuid())
-    bookingId     String        @unique
-    tenantId      String
+    id        String @id @default(uuid())
+    bookingId String @unique
+    tenantId  String
 
-    amount        Decimal
-    method        PaymentMethod @default(SSLCOMMERZ)
-    status        PaymentStatus @default(PENDING)
+    amount Decimal       @db.Decimal(10, 2)
+    method PaymentMethod @default(SSLCOMMERZ)
+    status PaymentStatus @default(PENDING)
 
-    transactionId String?       @unique
+    transactionId String? @unique
     gatewayData   Json?
 
-    paidAt        DateTime?
+    paidAt DateTime?
 
-    booking       Booking       @relation(fields: [bookingId], references: [id])
-    tenant        User          @relation(fields: [tenantId], references: [id])
+    booking Booking @relation(fields: [bookingId], references: [id])
+    tenant  User    @relation(fields: [tenantId], references: [id])
 
-    createdAt     DateTime      @default(now())
-    updatedAt     DateTime      @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@index([tenantId])
     @@index([status])

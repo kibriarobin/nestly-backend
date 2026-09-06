@@ -495,12 +495,12 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/flats",
+              "raw": "{{baseUrl}}/rooms",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "flats"
+                "rooms"
               ]
             }
           },

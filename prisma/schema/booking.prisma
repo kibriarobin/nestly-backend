@@ -6,7 +6,7 @@ model Booking {
   roomId        String?
   rentalType    RentalType
 
-  rent   Decimal
+  rent   Decimal       @db.Decimal(10, 2)
   status BookingStatus @default(PENDING)
 
   confirmedAt DateTime?
