@@ -21,13 +21,16 @@ declare global {
   }
 }
 
+const getToken = (req: Request) =>
+  req.cookies?.accessToken
+    ? req.cookies.accessToken
+    : req.headers.authorization?.startsWith("Bearer ")
+      ? req.headers.authorization.split(" ")[1]
+      : req.headers.authorization;
+
 export const auth = (...requiredRoles: UserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.cookies?.accessToken
-      ? req.cookies.accessToken
-      : req.headers.authorization?.startsWith("Bearer ")
-        ? req.headers.authorization.split(" ")[1]
-        : req.headers.authorization;
+    const token = getToken(req);
 
     if (!token) {
       throw new AppError(
@@ -69,3 +72,9 @@ export const auth = (...requiredRoles: UserRole[]) => {
     next();
   });
 };
+
+export const optionalAuth = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => (getToken(req) ? auth()(req, res, next) : next());

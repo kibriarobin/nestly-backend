@@ -26,10 +26,15 @@ const createProperty = async (
 
 const getAllProperties = async (
   filters: IPropertyFilters,
-  options: { page: number; limit: number },
+  options: {
+    page: number;
+    limit: number;
+    sortBy: string;
+    sortOrder: "asc" | "desc";
+  },
 ) => {
   const { city, status, searchTerm } = filters;
-  const { page, limit } = options;
+  const { page, limit, sortBy, sortOrder } = options;
 
   const andConditions: any[] = [{ deletedAt: null }];
 
@@ -58,7 +63,7 @@ const getAllProperties = async (
       where: whereConditions,
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: { createdAt: "desc" },
+      orderBy: { [sortBy]: sortOrder },
       include: {
         owner: { select: { id: true, name: true, email: true } },
       },
@@ -77,7 +82,15 @@ const getPropertyById = async (id: string) => {
     where: { id, deletedAt: null },
     include: {
       owner: { select: { id: true, name: true, email: true } },
-      flats: { where: { deletedAt: null } },
+      flats: {
+        where: { deletedAt: null },
+        include: {
+          rooms: {
+            where: { deletedAt: null },
+            select: { id: true, status: true },
+          },
+        },
+      },
     },
   });
 
@@ -92,6 +105,9 @@ const getMyProperties = async (ownerId: string) => {
   return prisma.property.findMany({
     where: { ownerId, deletedAt: null },
     orderBy: { createdAt: "desc" },
+    include: {
+      _count: { select: { flats: { where: { deletedAt: null } } } },
+    },
   });
 };
 

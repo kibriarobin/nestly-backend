@@ -14,7 +14,12 @@ const updatePropertyValidationSchema = z.object({
   description: z.string().min(1).optional(),
 });
 
+const updatePropertyStatusValidationSchema = z.object({
+  status: z.enum(["APPROVED", "REJECTED", "SUSPENDED"]),
+});
+
 export const PropertyValidation = {
   createPropertyValidationSchema,
   updatePropertyValidationSchema,
+  updatePropertyStatusValidationSchema,
 };

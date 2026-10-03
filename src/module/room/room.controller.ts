@@ -17,7 +17,7 @@ const createRoom = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllRooms = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, ["flatId", "status", "searchTerm"]);
+  const filters = pick(req.query, ["flatId", "status", "city", "searchTerm"]);
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
 

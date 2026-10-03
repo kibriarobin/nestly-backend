@@ -5,6 +5,8 @@ import { PropertyService } from "./property.service";
 import { pick } from "../../utils/pick";
 import { Request, Response } from "express";
 
+const SORTABLE_FIELDS = ["createdAt", "title"];
+
 const createProperty = catchAsync(async (req: Request, res: Response) => {
   const result = await PropertyService.createProperty(
     req.user!.userId,
@@ -24,6 +26,12 @@ const getAllProperties = catchAsync(async (req: Request, res: Response) => {
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
 
+  const sortBy = SORTABLE_FIELDS.includes(req.query.sortBy as string)
+    ? (req.query.sortBy as string)
+    : "createdAt";
+  const sortOrder: "asc" | "desc" =
+    req.query.sortOrder === "asc" ? "asc" : "desc";
+
   if (req.user?.role !== "ADMIN") {
     filters.status = "APPROVED";
   }
@@ -31,6 +39,8 @@ const getAllProperties = catchAsync(async (req: Request, res: Response) => {
   const result = await PropertyService.getAllProperties(filters, {
     page,
     limit,
+    sortBy,
+    sortOrder,
   });
 
   sendResponse(res, {

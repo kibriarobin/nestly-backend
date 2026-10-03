@@ -40,7 +40,7 @@ const getAllRooms = async (
   filters: IRoomFilters & { onlyApproved?: boolean },
   options: { page: number; limit: number },
 ) => {
-  const { flatId, status, searchTerm, onlyApproved } = filters;
+  const { flatId, status, city, searchTerm, onlyApproved } = filters;
   const { page, limit } = options;
 
   const andConditions: any[] = [
@@ -51,6 +51,12 @@ const getAllRooms = async (
   if (onlyApproved) {
     andConditions.push({ flat: { property: { status: "APPROVED" } } });
   }
+
+  if (city) {
+  andConditions.push({
+    flat: { property: { city: { equals: city, mode: "insensitive" } } },
+  });
+}
 
   if (flatId) andConditions.push({ flatId });
   if (status) andConditions.push({ status });

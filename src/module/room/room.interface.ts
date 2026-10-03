@@ -17,5 +17,6 @@ export interface IUpdateRoomPayload {
 export interface IRoomFilters {
   flatId?: string;
   status?: AvailabilityStatus;
+  city?: string;
   searchTerm?: string;
 }
