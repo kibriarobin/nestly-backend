@@ -84,11 +84,9 @@ const getPropertyById = async (id: string) => {
       owner: { select: { id: true, name: true, email: true } },
       flats: {
         where: { deletedAt: null },
+        orderBy: { createdAt: "asc" },
         include: {
-          rooms: {
-            where: { deletedAt: null },
-            select: { id: true, status: true },
-          },
+          rooms: { where: { deletedAt: null }, orderBy: { createdAt: "asc" } },
         },
       },
     },

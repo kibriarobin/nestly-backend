@@ -7,6 +7,18 @@ import { Request, Response } from "express";
 
 const SORTABLE_FIELDS = ["createdAt", "title"];
 
+const getListOptions = (req: Request) => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const sortBy = SORTABLE_FIELDS.includes(req.query.sortBy as string)
+    ? (req.query.sortBy as string)
+    : "createdAt";
+  const sortOrder: "asc" | "desc" =
+    req.query.sortOrder === "asc" ? "asc" : "desc";
+
+  return { page, limit, sortBy, sortOrder };
+};
+
 const createProperty = catchAsync(async (req: Request, res: Response) => {
   const result = await PropertyService.createProperty(
     req.user!.userId,
@@ -21,27 +33,14 @@ const createProperty = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+
 const getAllProperties = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, ["city", "status", "searchTerm"]);
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
+  const filters = pick(req.query, ["city", "searchTerm"]);
 
-  const sortBy = SORTABLE_FIELDS.includes(req.query.sortBy as string)
-    ? (req.query.sortBy as string)
-    : "createdAt";
-  const sortOrder: "asc" | "desc" =
-    req.query.sortOrder === "asc" ? "asc" : "desc";
-
-  if (req.user?.role !== "ADMIN") {
-    filters.status = "APPROVED";
-  }
-
-  const result = await PropertyService.getAllProperties(filters, {
-    page,
-    limit,
-    sortBy,
-    sortOrder,
-  });
+  const result = await PropertyService.getAllProperties(
+    { ...filters, status: "APPROVED" },
+    getListOptions(req),
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -51,6 +50,26 @@ const getAllProperties = catchAsync(async (req: Request, res: Response) => {
     meta: result.meta,
   });
 });
+
+const getAllPropertiesForAdmin = catchAsync(
+  async (req: Request, res: Response) => {
+    const filters = pick(req.query, ["city", "status", "searchTerm"]);
+
+    const result = await PropertyService.getAllProperties(
+      filters,
+      getListOptions(req),
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Properties retrieved successfully",
+      data: result.data,
+      meta: result.meta,
+    });
+  },
+);
+
 
 const getMyProperties = catchAsync(async (req: Request, res: Response) => {
   const result = await PropertyService.getMyProperties(req.user!.userId);
@@ -125,6 +144,7 @@ const updatePropertyStatus = catchAsync(async (req: Request, res: Response) => {
 export const PropertyController = {
   createProperty,
   getAllProperties,
+  getAllPropertiesForAdmin,
   getMyProperties,
   getPropertyById,
   updateProperty,

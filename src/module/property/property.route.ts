@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { auth, optionalAuth } from "../../middleware/checkAuth";
+import { auth } from "../../middleware/checkAuth";
 import { validateRequest } from "../../middleware/validateRequest";
 import { UserRole } from "../../../generated/prisma/enums";
 import { PropertyController } from "./property.controller";
@@ -20,7 +20,13 @@ router.get(
   PropertyController.getMyProperties,
 );
 
-router.get("/", optionalAuth, PropertyController.getAllProperties);
+router.get(
+  "/admin/list",
+  auth(UserRole.ADMIN),
+  PropertyController.getAllPropertiesForAdmin,
+);
+
+router.get("/", PropertyController.getAllProperties);
 
 router.get("/:propertyId", PropertyController.getPropertyById);
 

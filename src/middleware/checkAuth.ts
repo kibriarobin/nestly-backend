@@ -21,12 +21,15 @@ declare global {
   }
 }
 
-const getToken = (req: Request) =>
-  req.cookies?.accessToken
-    ? req.cookies.accessToken
-    : req.headers.authorization?.startsWith("Bearer ")
-      ? req.headers.authorization.split(" ")[1]
-      : req.headers.authorization;
+const getToken = (req: Request): string | null => {
+  if (req.cookies?.accessToken) {
+    return req.cookies.accessToken;
+  }
+  if (req.headers.authorization?.startsWith("Bearer ")) {
+    return req.headers.authorization.split(" ")[1] ?? null;
+  }
+  return null;
+};
 
 export const auth = (...requiredRoles: UserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -35,25 +38,19 @@ export const auth = (...requiredRoles: UserRole[]) => {
     if (!token) {
       throw new AppError(
         401,
-        "You are not logged in. Please log in to access this resource.",
+        "You are not logged in. Please log in to access this resource."
       );
     }
 
     const decoded = jwtUtils.verifyToken(
       token,
-      config.jwt_access_secret,
+      config.jwt_access_secret
     ) as RequestUser;
-    const { email, name, userId, role } = decoded;
 
-    if (requiredRoles.length && !requiredRoles.includes(role)) {
-      throw new AppError(
-        403,
-        "Forbidden. You don't have permission to access this resource.",
-      );
-    }
+    const { userId } = decoded;
 
     const user = await prisma.user.findUnique({
-      where: { id: userId, email, name, role },
+      where: { id: userId },
     });
 
     if (!user || user.deletedAt) {
@@ -63,18 +60,24 @@ export const auth = (...requiredRoles: UserRole[]) => {
     if (user.status === "BLOCKED") {
       throw new AppError(
         403,
-        "Your account has been blocked. Please contact support.",
+        "Your account has been blocked. Please contact support."
       );
     }
 
-    req.user = { email, name, userId, role };
+    if (requiredRoles.length && !requiredRoles.includes(user.role)) {
+      throw new AppError(
+        403,
+        "Forbidden. You don't have permission to access this resource."
+      );
+    }
+
+    req.user = {
+      userId: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+    };
 
     next();
   });
 };
-
-export const optionalAuth = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => (getToken(req) ? auth()(req, res, next) : next());
