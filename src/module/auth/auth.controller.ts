@@ -57,20 +57,13 @@ const googleCallback = catchAsync(async (req: Request, res: Response) => {
   res.cookie("accessToken", tokens.accessToken, cookieOptions);
   res.cookie("refreshToken", tokens.refreshToken, cookieOptions);
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Logged in with Google successfully",
-    data: {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-      tokens,
-    },
-  });
+  const roleDashboard: Record<string, string> = {
+    ADMIN: "/admin",
+    OWNER: "/owner",
+    TENANT: "/dashboard",
+  };
+
+  res.redirect(`${config.frontend_url}${roleDashboard[user.role] ?? "/"}`);
 });
 
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
